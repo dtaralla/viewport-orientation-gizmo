@@ -1,0 +1,40 @@
+[package]
+name = "viewport-orientation-gizmo"
+description = "A way to display the world's reference frame orientation at all times in the Bevy viewport."
+version = "0.1.0"
+repository = "https://github.com/dtaralla/viewport-orientation-gizmo"
+authors = ["David Taralla <davidtaralla@gmail.com>"]
+keywords = ["bevy", "viewport", "gizmo"]
+edition = "2021"
+license = "MIT"
+categories = ["Game development", "Rendering"]
+
+[dependencies]
+
+[dependencies.bevy]
+# version = "0.6.1"
+# branch = "main"
+git = "https://github.com/bevyengine/bevy"
+rev = "b6a647cc"
+features = ["render"]
+default-features = false
+
+[dev-dependencies.bevy]
+# version = "0.6.1"
+# branch = "main"
+git = "https://github.com/bevyengine/bevy"
+rev = "b6a647cc"
+features = ["bevy_winit", "bevy_gltf"]
+default-features = false
+
+[target.'cfg(target_os = "linux")'.dev-dependencies.bevy]
+# version = "0.6.1"
+# branch = "main"
+git = "https://github.com/bevyengine/bevy"
+rev = "b6a647cc"
+features = ["x11", "wayland"]
+default-features = false
+
+[dev-dependencies.smooth-bevy-cameras]
+git = "https://github.com/dtaralla/smooth-bevy-cameras"
+branch = "improve_unreal_controls"
