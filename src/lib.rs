@@ -41,8 +41,8 @@
 //!
 //! By default, the plugin will create a 64x64 area in the bottom left corner of the canvas where
 //! the gizmo will be drawn.
-//! When adding the plugin, you can set a few options to change this behavior using the initializer
-//! instead of [ViewportOrientationGizmoPlugin::new].
+//! When adding the plugin, you can set a few options to change this behavior using
+//! [ViewportOrientationGizmoPlugin::custom] instead of [ViewportOrientationGizmoPlugin::new].
 //! The function [ViewportOrientationGizmoPlugin::new_sized] can also be used if you are only
 //! interested in changing the default size but keep it to the bottom left corner.
 //!
@@ -60,7 +60,9 @@
 //!                 top: Val::Percent(5.0),
 //!                 right: Val::Px(10.0),
 //!                 ..default()
-//!             })
+//!             }),
+//!             // Use the default gizmo mesh
+//!             ..default()
 //!         }))
 //!         .add_startup_system(setup)
 //!         .run();
@@ -77,6 +79,12 @@
 //!         .insert(TrackedRotator);
 //! }
 //! ```
+//!
+//! ## Custom gizmos
+//!
+//! This crate supports customized gizmos through the use of the [gizmo] macro and setting the
+//! [PluginOptions::gizmo] option.
+//! See `examples/custom_gizmo.rs` and `examples/flashing_gizmo.rs`.
 //!
 //! # Known bugs & limitations
 //!

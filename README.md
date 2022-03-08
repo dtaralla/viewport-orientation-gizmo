@@ -37,6 +37,7 @@ fn setup(mut commands: Commands) {
         .insert(TrackedRotator);
 }
 ```
+
 # Plugin options
 By default, the plugin will create a 64x64 area in the bottom left corner of the canvas where
 the gizmo will be drawn.
@@ -57,7 +58,9 @@ fn main() {
                 top: Val::Percent(5.0),
                 right: Val::Px(10.0),
                 ..default()
-            })
+            }),
+            // Use the default gizmo mesh
+            ..default()
         }))
         .add_startup_system(setup)
         .run();
@@ -73,6 +76,13 @@ fn setup(mut commands: Commands) {
         .insert(TrackedRotator);
 }
 ```
+
+## Custom gizmos
+This crate supports customized gizmos through the use of the `gizmo!` macro and setting the
+`PluginOptions.gizmo` option.
+
+See `examples/custom_gizmo.rs` and `examples/flashing_gizmo.rs`.
+
 # Known bugs & limitations
 - This crash might occur for some gizmo sizes:
   ```
