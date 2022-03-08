@@ -1,7 +1,7 @@
 /// Heavily inspired from the [render_to_texture][1] example
 /// [1]: https://github.com/bevyengine/bevy/blob/main/examples/3d/render_to_texture.rs
 use super::first_pass::*;
-use crate::CanvasLocation::BottomLeft;
+use crate::gizmo;
 use bevy::{
     core_pipeline::RenderTargetClearColors,
     prelude::*,
@@ -36,13 +36,16 @@ pub enum CanvasLocation {
 pub struct PluginOptions {
     pub size: u32,
     pub location: CanvasLocation,
+    pub gizmo:
+        fn(RenderLayers, &mut Commands, ResMut<Assets<Mesh>>, ResMut<Assets<StandardMaterial>>),
 }
 
 impl Default for PluginOptions {
     fn default() -> Self {
         Self {
             size: 64,
-            location: BottomLeft,
+            location: CanvasLocation::BottomLeft,
+            gizmo: default_gizmo,
         }
     }
 }
@@ -98,12 +101,66 @@ fn update_1st_pass_camera_transform(
     }
 }
 
+gizmo![default_gizmo(meshes, materials):
+    PbrBundle {
+        mesh: meshes.add(Mesh::from(shape::Box {
+            min_x: 0.0,
+            min_y: 0.0,
+            min_z: 0.0,
+            max_x: 1.0,
+            max_y: 0.05,
+            max_z: 0.05,
+        })),
+        material: materials.add(StandardMaterial {
+            base_color: Color::hex("b82700").unwrap(),
+            unlit: true,
+            ..default()
+        }),
+        transform: Transform::identity(),
+        ..default()
+    },
+    PbrBundle {
+        mesh: meshes.add(Mesh::from(shape::Box {
+            min_x: 0.0,
+            min_y: 0.0,
+            min_z: 0.0,
+            max_x: 0.05,
+            max_y: 1.0,
+            max_z: 0.05,
+        })),
+        material: materials.add(StandardMaterial {
+            base_color: Color::hex("5d9900").unwrap(),
+            unlit: true,
+            ..default()
+        }),
+        transform: Transform::from_xyz(0.0, 0.0, 0.0),
+        ..default()
+    },
+    PbrBundle {
+        mesh: meshes.add(Mesh::from(shape::Box {
+            min_x: 0.0,
+            min_y: 0.0,
+            min_z: 0.0,
+            max_x: 0.05,
+            max_y: 0.05,
+            max_z: 1.0,
+        })),
+        material: materials.add(StandardMaterial {
+            base_color: Color::hex("2e78e4").unwrap(),
+            unlit: true,
+            ..default()
+        }),
+        transform: Transform::from_xyz(0.0, 0.0, 0.0),
+        ..default()
+    }
+];
+
 /// Setup virtual camera, gizmo mesh and plugin canvas
 fn setup(
     plugin_options: Res<PluginOptions>,
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
+    meshes: ResMut<Assets<Mesh>>,
+    materials: ResMut<Assets<StandardMaterial>>,
     mut active_cameras: ResMut<ActiveCameras>,
     mut images: ResMut<Assets<Image>>,
     mut clear_colors: ResMut<RenderTargetClearColors>,
@@ -137,63 +194,7 @@ fn setup(
     let first_pass_layer = RenderLayers::layer(1);
 
     // What will be rendered to the texture
-    commands
-        .spawn_bundle(PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Box {
-                min_x: 0.0,
-                min_y: 0.0,
-                min_z: 0.0,
-                max_x: 1.0,
-                max_y: 0.05,
-                max_z: 0.05,
-            })),
-            material: materials.add(StandardMaterial {
-                base_color: Color::hex("b82700").unwrap(),
-                unlit: true,
-                ..Default::default()
-            }),
-            transform: Transform::identity(),
-            ..Default::default()
-        })
-        .insert(first_pass_layer);
-    commands
-        .spawn_bundle(PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Box {
-                min_x: 0.0,
-                min_y: 0.0,
-                min_z: 0.0,
-                max_x: 0.05,
-                max_y: 1.0,
-                max_z: 0.05,
-            })),
-            material: materials.add(StandardMaterial {
-                base_color: Color::hex("5d9900").unwrap(),
-                unlit: true,
-                ..Default::default()
-            }),
-            transform: Transform::from_xyz(0.0, 0.0, 0.0),
-            ..Default::default()
-        })
-        .insert(first_pass_layer);
-    commands
-        .spawn_bundle(PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Box {
-                min_x: 0.0,
-                min_y: 0.0,
-                min_z: 0.0,
-                max_x: 0.05,
-                max_y: 0.05,
-                max_z: 1.0,
-            })),
-            material: materials.add(StandardMaterial {
-                base_color: Color::hex("2e78e4").unwrap(),
-                unlit: true,
-                ..Default::default()
-            }),
-            transform: Transform::from_xyz(0.0, 0.0, 0.0),
-            ..Default::default()
-        })
-        .insert(first_pass_layer);
+    (plugin_options.gizmo)(first_pass_layer, &mut commands, meshes, materials);
 
     // First pass camera capturing what will be rendered to the texture
     let render_target = RenderTarget::Image(image_handle);

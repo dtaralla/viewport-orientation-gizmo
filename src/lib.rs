@@ -87,6 +87,8 @@
 //! I've submitted a [bug report](https://github.com/bevyengine/bevy/issues/4127).
 
 mod first_pass;
+mod gizmo;
 mod plugin;
 
+pub use gizmo::*;
 pub use plugin::*;
