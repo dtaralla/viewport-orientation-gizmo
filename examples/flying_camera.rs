@@ -26,7 +26,7 @@ fn setup(
     commands.spawn_bundle(PbrBundle {
         mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
         material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
-        ..Default::default()
+        ..default()
     });
 
     // cube
@@ -34,7 +34,7 @@ fn setup(
         mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
         material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
         transform: Transform::from_xyz(0.0, 0.5, 0.0),
-        ..Default::default()
+        ..default()
     });
 
     // reference frame visualizer
@@ -51,10 +51,10 @@ fn setup(
             material: materials.add(StandardMaterial {
                 base_color: Color::hex("b82700").unwrap(),
                 unlit: true,
-                ..Default::default()
+                ..default()
             }),
             transform: Transform::identity(),
-            ..Default::default()
+            ..default()
         },
         PbrBundle {
             mesh: meshes.add(Mesh::from(shape::Box {
@@ -68,10 +68,10 @@ fn setup(
             material: materials.add(StandardMaterial {
                 base_color: Color::hex("5d9900").unwrap(),
                 unlit: true,
-                ..Default::default()
+                ..default()
             }),
             transform: Transform::from_xyz(0.0, 0.0, 0.0),
-            ..Default::default()
+            ..default()
         },
         PbrBundle {
             mesh: meshes.add(Mesh::from(shape::Box {
@@ -85,17 +85,17 @@ fn setup(
             material: materials.add(StandardMaterial {
                 base_color: Color::hex("2e78e4").unwrap(),
                 unlit: true,
-                ..Default::default()
+                ..default()
             }),
             transform: Transform::from_xyz(0.0, 0.0, 0.0),
-            ..Default::default()
+            ..default()
         },
     ]);
 
     // light
     commands.spawn_bundle(PointLightBundle {
         transform: Transform::from_xyz(4.0, 8.0, 4.0),
-        ..Default::default()
+        ..default()
     });
 
     // flying camera
