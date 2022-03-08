@@ -1,5 +1,5 @@
-//! Simplest example.
-//! Demonstrates how to enable the gizmo and attach it to a flying camera controller.
+//! Advanced example.
+//! Demonstrates how to customize the gizmo with your own bundles.
 
 use bevy::prelude::*;
 use smooth_bevy_cameras::controllers::unreal::{
@@ -8,14 +8,68 @@ use smooth_bevy_cameras::controllers::unreal::{
 use smooth_bevy_cameras::LookTransformPlugin;
 use viewport_orientation_gizmo::*;
 
+// Make X and Z axis a bit fatter and use a capsule for Y
+gizmo![my_first_gizmo(meshes, materials):
+    PbrBundle {
+        mesh: meshes.add(Mesh::from(shape::Box {
+            min_x: 0.0,
+            min_y: 0.0,
+            min_z: 0.0,
+            max_x: 1.0,
+            max_y: 0.2,
+            max_z: 0.2,
+        })),
+        material: materials.add(StandardMaterial {
+            base_color: Color::hex("b82700").unwrap(),
+            unlit: true,
+            ..default()
+        }),
+        transform: Transform::identity(),
+        ..default()
+    },
+    // Could have used a PbrBundle, but shows that tuples of components are also supported
+    (
+        Transform::from_xyz(0.1, 0.5, 0.1),
+        GlobalTransform::default(),
+        meshes.add(Mesh::from(shape::Capsule { radius: 0.2, depth: 0.6, ..default() })),
+        materials.add(StandardMaterial {
+            base_color: Color::hex("5d9900").unwrap(),
+            unlit: true,
+            ..default()
+        }),
+        Visibility::default(),
+        ComputedVisibility::default(),
+    ),
+    PbrBundle {
+        mesh: meshes.add(Mesh::from(shape::Box {
+            min_x: 0.0,
+            min_y: 0.0,
+            min_z: 0.0,
+            max_x: 0.2,
+            max_y: 0.2,
+            max_z: 1.0,
+        })),
+        material: materials.add(StandardMaterial {
+            base_color: Color::hex("2e78e4").unwrap(),
+            unlit: true,
+            ..default()
+        }),
+        transform: Transform::from_xyz(0.0, 0.0, 0.0),
+        ..default()
+    },
+];
+
 fn main() {
     App::new()
         .insert_resource(Msaa { samples: 4 })
         .add_plugins(DefaultPlugins)
         .add_plugin(LookTransformPlugin)
         .add_plugin(UnrealCameraPlugin::default())
-        // Enables the system that draws the gizmo
-        .add_plugin(ViewportOrientationGizmoPlugin::new())
+        // Enables my_first_gizmo
+        .add_plugin(ViewportOrientationGizmoPlugin::custom(PluginOptions {
+            gizmo: my_first_gizmo,
+            ..default()
+        }))
         .add_startup_system(setup)
         .run();
 }
