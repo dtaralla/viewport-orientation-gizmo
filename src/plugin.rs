@@ -30,14 +30,16 @@ pub enum CanvasLocation {
     Custom(Rect<Val>),
 }
 
+type Gizmo =
+    fn(RenderLayers, &mut Commands, ResMut<Assets<Mesh>>, ResMut<Assets<StandardMaterial>>);
+
 /// Options that enable plugin behavior customization.
 /// Defaults to 64x64, [BottomLeft].
 #[derive(Clone)]
 pub struct PluginOptions {
     pub size: u32,
     pub location: CanvasLocation,
-    pub gizmo:
-        fn(RenderLayers, &mut Commands, ResMut<Assets<Mesh>>, ResMut<Assets<StandardMaterial>>),
+    pub gizmo: Gizmo,
 }
 
 impl Default for PluginOptions {
@@ -70,6 +72,12 @@ impl ViewportOrientationGizmoPlugin {
     /// Displays a customized gizmo.
     pub fn custom(options: PluginOptions) -> Self {
         Self { options }
+    }
+}
+
+impl Default for ViewportOrientationGizmoPlugin {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
