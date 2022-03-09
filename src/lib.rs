@@ -94,6 +94,7 @@
 //!
 //! I've submitted a [bug report](https://github.com/bevyengine/bevy/issues/4127).
 
+mod default_gizmo;
 mod first_pass;
 mod gizmo;
 mod plugin;

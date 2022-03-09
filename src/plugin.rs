@@ -1,7 +1,7 @@
 /// Heavily inspired from the [render_to_texture][1] example
 /// [1]: https://github.com/bevyengine/bevy/blob/main/examples/3d/render_to_texture.rs
 use super::first_pass::*;
-use crate::gizmo;
+use crate::default_gizmo;
 use bevy::{
     core_pipeline::RenderTargetClearColors,
     prelude::*,
@@ -30,7 +30,7 @@ pub enum CanvasLocation {
     Custom(Rect<Val>),
 }
 
-type Gizmo =
+pub(crate) type Gizmo =
     fn(RenderLayers, &mut Commands, ResMut<Assets<Mesh>>, ResMut<Assets<StandardMaterial>>);
 
 /// Options that enable plugin behavior customization.
@@ -47,7 +47,7 @@ impl Default for PluginOptions {
         Self {
             size: 64,
             location: CanvasLocation::BottomLeft,
-            gizmo: default_gizmo,
+            gizmo: default_gizmo::GIZMO,
         }
     }
 }
@@ -108,60 +108,6 @@ fn update_1st_pass_camera_transform(
         cam_transform.rotation = tracked_transform.rotation;
     }
 }
-
-gizmo![default_gizmo(meshes, materials):
-    PbrBundle {
-        mesh: meshes.add(Mesh::from(shape::Box {
-            min_x: 0.0,
-            min_y: 0.0,
-            min_z: 0.0,
-            max_x: 1.0,
-            max_y: 0.05,
-            max_z: 0.05,
-        })),
-        material: materials.add(StandardMaterial {
-            base_color: Color::hex("b82700").unwrap(),
-            unlit: true,
-            ..default()
-        }),
-        transform: Transform::identity(),
-        ..default()
-    },
-    PbrBundle {
-        mesh: meshes.add(Mesh::from(shape::Box {
-            min_x: 0.0,
-            min_y: 0.0,
-            min_z: 0.0,
-            max_x: 0.05,
-            max_y: 1.0,
-            max_z: 0.05,
-        })),
-        material: materials.add(StandardMaterial {
-            base_color: Color::hex("5d9900").unwrap(),
-            unlit: true,
-            ..default()
-        }),
-        transform: Transform::from_xyz(0.0, 0.0, 0.0),
-        ..default()
-    },
-    PbrBundle {
-        mesh: meshes.add(Mesh::from(shape::Box {
-            min_x: 0.0,
-            min_y: 0.0,
-            min_z: 0.0,
-            max_x: 0.05,
-            max_y: 0.05,
-            max_z: 1.0,
-        })),
-        material: materials.add(StandardMaterial {
-            base_color: Color::hex("2e78e4").unwrap(),
-            unlit: true,
-            ..default()
-        }),
-        transform: Transform::from_xyz(0.0, 0.0, 0.0),
-        ..default()
-    }
-];
 
 /// Setup virtual camera, gizmo mesh and plugin canvas
 fn setup(
