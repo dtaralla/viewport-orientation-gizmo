@@ -1,5 +1,6 @@
 [![crates.io](https://img.shields.io/crates/v/viewport_orientation_gizmo)](https://crates.io/crates/viewport_orientation_gizmo)
 [![docs.rs](https://docs.rs/viewport_orientation_gizmo/badge.svg)](https://docs.rs/viewport_orientation_gizmo)
+[![Bevy tracking](https://img.shields.io/badge/Bevy%20tracking-main-lightblue)](https://github.com/bevyengine/bevy/blob/main/docs/plugins_guidelines.md#main-branch-tracking)
 
 A way to display the world's reference frame orientation at all times, to help when authoring in
 Bevy viewports.
