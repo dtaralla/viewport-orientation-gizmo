@@ -83,12 +83,3 @@ This crate supports customized gizmos through the use of the `gizmo!` macro and 
 `PluginOptions.gizmo` option.
 
 See `examples/custom_gizmo.rs` and `examples/flashing_gizmo.rs`.
-
-# Known bugs & limitations
-- This crash might occur for some gizmo sizes:
-  ```
-  thread 'main' panicked at 'assertion failed: self.axis_slices.x * self.axis_slices.y * self.axis_slices.z <= 4096'
-  ```
-  In that case, try to use the default or find another size where it doesn't crash.
-  
-  I've submitted a [bug report](https://github.com/bevyengine/bevy/issues/4127).
