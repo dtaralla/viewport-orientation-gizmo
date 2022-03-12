@@ -7,7 +7,7 @@ use bevy::{
     prelude::*,
     reflect::TypeUuid,
     render::{
-        camera::{ActiveCameras, Camera, RenderTarget},
+        camera::{Camera, RenderTarget},
         render_resource::{
             Extent3d, TextureDescriptor, TextureDimension, TextureFormat, TextureUsages,
         },
@@ -94,8 +94,12 @@ impl Plugin for ViewportOrientationGizmoPlugin {
 }
 
 /// Helper to quickly identify the first pass camera spawned in setup(...)
-#[derive(Component)]
+#[derive(Component, Default)]
 pub(crate) struct FirstPassCamera;
+
+/// Helper to quickly identify the first pass camera spawned in setup(...)
+#[derive(Component)]
+pub(crate) struct FirstPassCameraRoot;
 
 /// Helper to quickly identify the UI render-to-texture result on the canvas
 #[derive(Component)]
@@ -107,8 +111,8 @@ const RENDER_IMAGE_HANDLE: HandleUntyped =
 
 /// Update the virtual camera transform
 fn update_1st_pass_camera_transform(
-    tracked_rotator: Query<&Transform, (With<TrackedRotator>, Without<FirstPassCamera>)>,
-    mut first_pass_cam: Query<&mut Transform, With<FirstPassCamera>>,
+    tracked_rotator: Query<&Transform, (With<TrackedRotator>, Without<FirstPassCameraRoot>)>,
+    mut first_pass_cam: Query<&mut Transform, With<FirstPassCameraRoot>>,
 ) {
     if let Some(tracked_transform) = tracked_rotator.iter().next() {
         let mut cam_transform = first_pass_cam.single_mut();
@@ -122,7 +126,6 @@ fn setup(
     mut commands: Commands,
     meshes: ResMut<Assets<Mesh>>,
     materials: ResMut<Assets<StandardMaterial>>,
-    mut active_cameras: ResMut<ActiveCameras>,
     mut images: ResMut<Assets<Image>>,
     mut clear_colors: ResMut<RenderTargetClearColors>,
 ) {
@@ -160,22 +163,20 @@ fn setup(
     // First pass camera capturing what will be rendered to the texture
     let render_target = RenderTarget::Image(image_handle);
     clear_colors.insert(render_target.clone(), Color::rgba(0.0, 0.0, 0.0, 0.0));
-    active_cameras.add(FIRST_PASS_CAMERA);
     commands
         .spawn()
         .insert(Transform::identity().looking_at(Vec3::new(0.0, 0.0, -3.0), Vec3::Y))
         .insert(GlobalTransform::identity())
-        .insert(FirstPassCamera)
+        .insert(FirstPassCameraRoot)
         .with_children(|parent| {
             parent
-                .spawn_bundle(PerspectiveCameraBundle {
+                .spawn_bundle(PerspectiveCameraBundle::<FirstPassCamera> {
                     camera: Camera {
-                        name: Some(FIRST_PASS_CAMERA.to_string()),
                         target: render_target,
                         ..default()
                     },
                     transform: Transform::from_translation(Vec3::new(0.0, 0.0, 3.0)),
-                    ..default()
+                    ..PerspectiveCameraBundle::new()
                 })
                 .insert(first_pass_layer);
         });

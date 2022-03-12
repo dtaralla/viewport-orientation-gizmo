@@ -7,7 +7,7 @@ use bevy_mod_raycast::{
     DefaultRaycastingPlugin, RayCastMesh, RayCastMethod, RayCastSource, RaycastSystem,
 };
 
-use crate::{FirstPassCamera, GizmoUi};
+use crate::{FirstPassCameraRoot, GizmoUi};
 
 pub(crate) struct ClickReactionPlugin;
 
@@ -29,7 +29,7 @@ pub struct GizmoRaycastSet;
 
 pub type RaycastableGizmo = RayCastMesh<GizmoRaycastSet>;
 
-fn setup(mut commands: Commands, query: Query<&Children, With<FirstPassCamera>>) {
+fn setup(mut commands: Commands, query: Query<&Children, With<FirstPassCameraRoot>>) {
     if let Ok(e) = query.get_single() {
         let e = e.get(0).unwrap();
         commands
