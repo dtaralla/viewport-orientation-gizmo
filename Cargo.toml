@@ -9,6 +9,9 @@ edition = "2021"
 license = "MIT"
 categories = ["Game development", "Rendering"]
 
+[features]
+click-reaction = ["bevy_mod_raycast"]
+
 [dependencies]
 
 [dependencies.bevy]
@@ -16,6 +19,16 @@ git = "https://github.com/bevyengine/bevy"
 branch = "main"
 features = ["render"]
 default-features = false
+
+[dependencies.bevy_mod_raycast]
+git = "https://github.com/dtaralla/bevy_mod_raycast"
+branch = "support_all_render_targets"
+optional = true
+
+[dependencies.bevy_easings]
+git = "https://github.com/dtaralla/bevy_easings"
+branch = "bevy_main"
+optional = true
 
 [dev-dependencies.bevy]
 git = "https://github.com/bevyengine/bevy"
@@ -32,3 +45,7 @@ default-features = false
 [dev-dependencies.smooth-bevy-cameras]
 git = "https://github.com/dtaralla/smooth-bevy-cameras"
 branch = "track_main"
+
+[[example]]
+name = "clickable_gizmo"
+required-features = ["click-reaction", "bevy_easings"]

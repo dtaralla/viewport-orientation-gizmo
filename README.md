@@ -83,3 +83,10 @@ This crate supports customized gizmos through the use of the `gizmo!` macro and 
 `PluginOptions.gizmo` option.
 
 See `examples/custom_gizmo.rs` and `examples/flashing_gizmo.rs`.
+
+## Clickable gizmos
+This plugin can emit click events when the meshes constituting your gizmo are clicked.
+
+This feature is optional; you will need to include `click-reaction`.
+
+See `examples/clickable_gizmo.rs`.

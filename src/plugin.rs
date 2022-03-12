@@ -87,12 +87,19 @@ impl Plugin for ViewportOrientationGizmoPlugin {
             .add_startup_system(setup)
             .add_system(update_1st_pass_camera_transform);
         init_app_rendering(app);
+
+        #[cfg(feature = "click-reaction")]
+        app.add_plugin(crate::click_reaction::ClickReactionPlugin);
     }
 }
 
 /// Helper to quickly identify the first pass camera spawned in setup(...)
 #[derive(Component)]
-struct FirstPassCamera;
+pub(crate) struct FirstPassCamera;
+
+/// Helper to quickly identify the UI render-to-texture result on the canvas
+#[derive(Component)]
+pub(crate) struct GizmoUi;
 
 /// This handle will point at the texture to which we will render in the first pass.
 const RENDER_IMAGE_HANDLE: HandleUntyped =
@@ -177,39 +184,42 @@ fn setup(
     commands.spawn_bundle(UiCameraBundle::default());
 
     // Display RenderTexture in bottom left corner of UI canvas
-    commands.spawn_bundle(NodeBundle {
-        style: Style {
-            size: Size::new(
-                Val::Px(plugin_options.size as f32),
-                Val::Px(plugin_options.size as f32),
-            ),
-            position_type: PositionType::Absolute,
-            position: match plugin_options.location {
-                CanvasLocation::TopLeft => Rect {
-                    left: Val::Px(0.0),
-                    top: Val::Px(0.0),
-                    ..default()
+    commands
+        .spawn_bundle(NodeBundle {
+            style: Style {
+                size: Size::new(
+                    Val::Px(plugin_options.size as f32),
+                    Val::Px(plugin_options.size as f32),
+                ),
+                position_type: PositionType::Absolute,
+                position: match plugin_options.location {
+                    CanvasLocation::TopLeft => Rect {
+                        left: Val::Px(0.0),
+                        top: Val::Px(0.0),
+                        ..default()
+                    },
+                    CanvasLocation::TopRight => Rect {
+                        right: Val::Px(0.0),
+                        top: Val::Px(0.0),
+                        ..default()
+                    },
+                    CanvasLocation::BottomLeft => Rect {
+                        left: Val::Px(0.0),
+                        bottom: Val::Px(0.0),
+                        ..default()
+                    },
+                    CanvasLocation::BottomRight => Rect {
+                        right: Val::Px(0.0),
+                        bottom: Val::Px(0.0),
+                        ..default()
+                    },
+                    CanvasLocation::Custom(r) => r,
                 },
-                CanvasLocation::TopRight => Rect {
-                    right: Val::Px(0.0),
-                    top: Val::Px(0.0),
-                    ..default()
-                },
-                CanvasLocation::BottomLeft => Rect {
-                    left: Val::Px(0.0),
-                    bottom: Val::Px(0.0),
-                    ..default()
-                },
-                CanvasLocation::BottomRight => Rect {
-                    right: Val::Px(0.0),
-                    bottom: Val::Px(0.0),
-                    ..default()
-                },
-                CanvasLocation::Custom(r) => r,
+                ..default()
             },
+            image: UiImage::from(RENDER_IMAGE_HANDLE.typed()),
             ..default()
-        },
-        image: UiImage::from(RENDER_IMAGE_HANDLE.typed()),
-        ..default()
-    });
+        })
+        .insert(Interaction::default())
+        .insert(GizmoUi);
 }
