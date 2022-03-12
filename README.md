@@ -2,23 +2,36 @@
 [![docs.rs](https://docs.rs/viewport_orientation_gizmo/badge.svg)](https://docs.rs/viewport_orientation_gizmo)
 [![Bevy tracking](https://img.shields.io/badge/Bevy%20tracking-main-lightblue)](https://github.com/bevyengine/bevy/blob/main/docs/plugins_guidelines.md#main-branch-tracking)
 
-A way to display the world's reference frame orientation at all times, to help when authoring in
-Bevy viewports.
-Can also be used to display the orientation of any other entity featuring a `Transform`.
+A way to display the world's reference frame orientation at all times, to help when authoring in Bevy viewports. Can
+also be used to display the orientation of any other entity featuring a `Transform`.
 
 **PRs welcomed!**
 
 # Prerequisites
-This uses the experimental *[Render to texture](https://github.com/bevyengine/bevy/blob/main/examples/3d/render_to_texture.rs)* feature of Bevy.
 
-Requires Bevy at [81d57e129b507047ab165b1cee1975cd54ba100f](https://github.com/bevyengine/bevy/commit/81d57e129b507047ab165b1cee1975cd54ba100f) or later.
+This uses the
+experimental *[Render to texture](https://github.com/bevyengine/bevy/blob/main/examples/3d/render_to_texture.rs)*
+feature of Bevy.
+
+I'm trying to follow Bevy main whenever there are breaking changes. See table below for which version needs what minimum
+Bevy version/Bevy main commit.
+
+| x         | Supported features | Bevy min. version | Bevy main                                                                                     |
+|-----------|--------------------|-------------------|-----------------------------------------------------------------------------------------------|
+| **0.3.0** | all                | N/A[^1]           | [bf6de89](https://github.com/bevyengine/bevy/commit/bf6de8962287050369cd98605490bdd7770c87b4) |
+| **0.2.0** | all                | N/A[^1]           | [81d57e1](https://github.com/bevyengine/bevy/commit/81d57e129b507047ab165b1cee1975cd54ba100f) |
+
+[^1]: There is currently no official release of Bevy including the required commit.
 
 # Usage
-Add the plugin, then attach a `TrackedRotator` component to your camera (or any other entity
-with a `Transform`, if you want to track the rotation of something else).
+
+Add the plugin, then attach a `TrackedRotator` component to your camera (or any other entity with a `Transform`, if you
+want to track the rotation of something else).
+
 ```rust
 use bevy::prelude::*;
 use viewport_orientation_gizmo::*;
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
