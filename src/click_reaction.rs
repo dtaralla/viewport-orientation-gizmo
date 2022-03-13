@@ -38,39 +38,38 @@ fn setup(mut commands: Commands, query: Query<&Children, With<FirstPassCamera>>)
     }
 }
 
-/// Represents a gizmo axis.
-#[derive(Clone, Copy, Debug)]
-pub enum GizmoAxis {
-    X,
-    Y,
-    Z,
-}
-
-impl From<GizmoAxis> for Vec3 {
-    fn from(axis: GizmoAxis) -> Self {
+impl From<GizmoClickableAxis> for Vec3 {
+    fn from(axis: GizmoClickableAxis) -> Self {
         match axis {
-            GizmoAxis::X => Vec3::X,
-            GizmoAxis::Y => Vec3::Y,
-            GizmoAxis::Z => Vec3::Z,
+            GizmoClickableAxis::X => Vec3::X,
+            GizmoClickableAxis::Y => Vec3::Y,
+            GizmoClickableAxis::Z => Vec3::Z,
+            GizmoClickableAxis::XNeg => -Vec3::X,
+            GizmoClickableAxis::YNeg => -Vec3::Y,
+            GizmoClickableAxis::ZNeg => -Vec3::Z,
         }
     }
 }
 
-/// Attach this component to the meshes you want to be clickable.
-#[derive(Component)]
-pub struct GizmoClickable {
-    /// The axis this mesh represents.
-    pub axis: GizmoAxis,
+/// Attach this component to the meshes you want to represent clickable axis.
+#[derive(Component, Copy, Clone)]
+pub enum GizmoClickableAxis {
+    X,
+    Y,
+    Z,
+    XNeg,
+    YNeg,
+    ZNeg,
 }
 
 /// Event sent when one of the [GizmoClickable] is left-clicked. Contains the [GizmoAxis] that was
 /// clicked.
-pub struct ClickEvent(pub GizmoAxis);
+pub struct ClickEvent(pub Option<GizmoClickableAxis>, pub Entity);
 
 fn listen_for_clicks(
     mut events: EventWriter<ClickEvent>,
     mut mouse_button_events: EventReader<MouseButtonInput>,
-    tracked_entities: Query<(Entity, &GizmoClickable), With<RayCastMesh<GizmoRaycastSet>>>,
+    tracked_entities: Query<(Entity, Option<&GizmoClickableAxis>), With<RaycastableGizmo>>,
     raycast_src: Query<&RayCastSource<GizmoRaycastSet>>,
 ) {
     // Did we receive a left mouse click this frame?
@@ -86,24 +85,26 @@ fn listen_for_clicks(
     }
 
     // Did we click on one of the gizmo parts? If yes, derive which axis it represents
-    let mut axis = None;
+    let (mut axis, mut entity) = (None, None);
     for s in raycast_src.iter() {
         if let Some(ls) = s.intersect_list() {
-            for intersect in ls {
-                if let Ok(clickable) = tracked_entities.get(intersect.0) {
-                    axis = Some(clickable.1.axis);
-                    break;
+            if let Some(intersect) = ls.iter().next() {
+                entity = Some(intersect.0);
+                if let Ok(raycastable) = tracked_entities.get(intersect.0) {
+                    if let Some(gizmo_clickable) = raycastable.1 {
+                        axis = Some(*gizmo_clickable);
+                    }
                 }
+                break;
             }
         }
     }
 
-    if axis.is_none() {
-        //
+    if entity.is_none() {
         return;
     }
 
-    events.send(ClickEvent(axis.unwrap()))
+    events.send(ClickEvent(axis, entity.unwrap()))
 }
 
 fn update_raycast_with_cursor(

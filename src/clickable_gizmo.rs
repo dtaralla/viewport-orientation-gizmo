@@ -20,7 +20,7 @@ gizmo![the_gizmo(meshes, materials):
         }),
         transform: Transform::identity(),
         ..default()
-    } ; RaycastableGizmo::default() ; GizmoClickable { axis: GizmoAxis::X },
+    } ; RaycastableGizmo::default() ; GizmoClickableAxis::X,
     PbrBundle {
         mesh: meshes.add(Mesh::from(shape::Box {
             min_x: 0.0,
@@ -37,7 +37,7 @@ gizmo![the_gizmo(meshes, materials):
         }),
         transform: Transform::from_xyz(0.0, 0.0, 0.0),
         ..default()
-    } ; RaycastableGizmo::default() ; GizmoClickable { axis: GizmoAxis::Y },
+    } ; RaycastableGizmo::default() ; GizmoClickableAxis::Y,
     PbrBundle {
         mesh: meshes.add(Mesh::from(shape::Box {
             min_x: 0.0,
@@ -54,7 +54,7 @@ gizmo![the_gizmo(meshes, materials):
         }),
         transform: Transform::from_xyz(0.0, 0.0, 0.0),
         ..default()
-    } ; RaycastableGizmo::default() ; GizmoClickable { axis: GizmoAxis::Z }
+    } ; RaycastableGizmo::default() ; GizmoClickableAxis::Z
 ];
 
 pub static GIZMO: crate::plugin::Gizmo = the_gizmo;
