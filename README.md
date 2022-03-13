@@ -102,4 +102,4 @@ This plugin can emit click events when the meshes constituting your gizmo are cl
 
 This feature is optional; you will need to include `click-reaction`.
 
-See `examples/clickable_gizmo.rs`.
+See `examples/clickable_gizmo.rs` and `examples/clickable_gizmo_with_projection_change.rs`.
