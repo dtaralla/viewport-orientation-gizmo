@@ -117,29 +117,30 @@ fn react_to_clicks(
 
     let (entity, rotator) = rotator.single();
     for event in events.iter() {
-        let axis = event.0;
-        if let Ok(current_anim) = animations.get(entity) {
-            if current_anim.state == Play {
-                // Wait for animations to finish before allowing another rotation
-                return;
-            } else {
-                commands
-                    .entity(entity)
-                    .remove::<EasingComponent<Transform>>();
+        if let Some(axis) = event.0 {
+            if let Ok(current_anim) = animations.get(entity) {
+                if current_anim.state == Play {
+                    // Wait for animations to finish before allowing another rotation
+                    return;
+                } else {
+                    commands
+                        .entity(entity)
+                        .remove::<EasingComponent<Transform>>();
+                }
             }
-        }
 
-        // Align camera Z with selected direction
-        let rot_axis = dir * Vec3::from(axis).cross(rotator.local_z());
-        commands.entity(entity).insert(
-            rotator.ease_to(
-                Transform::identity()
-                    .with_rotation(Quat::from_axis_angle(rot_axis, PI / 2.) * rotator.rotation),
-                EaseFunction::ExponentialOut,
-                EasingType::Once {
-                    duration: ANIM_DURATION,
-                },
-            ),
-        );
+            // Align camera Z with selected direction
+            let rot_axis = dir * Vec3::from(axis).cross(rotator.local_z());
+            commands.entity(entity).insert(
+                rotator.ease_to(
+                    Transform::identity()
+                        .with_rotation(Quat::from_axis_angle(rot_axis, PI / 2.) * rotator.rotation),
+                    EaseFunction::ExponentialOut,
+                    EasingType::Once {
+                        duration: ANIM_DURATION,
+                    },
+                ),
+            );
+        }
     }
 }
