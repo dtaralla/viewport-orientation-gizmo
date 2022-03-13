@@ -1,7 +1,7 @@
 [package]
 name = "viewport-orientation-gizmo"
 description = "A way to display the world's reference frame orientation at all times in the Bevy viewport."
-version = "0.3.0"
+version = "0.3.1"
 repository = "https://github.com/dtaralla/viewport-orientation-gizmo"
 authors = ["David Taralla <davidtaralla@gmail.com>"]
 keywords = ["bevy", "viewport", "gizmo"]
