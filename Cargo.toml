@@ -49,3 +49,7 @@ branch = "track_main"
 [[example]]
 name = "clickable_gizmo"
 required-features = ["click-reaction", "bevy_easings"]
+
+[[example]]
+name = "clickable_gizmo_with_projection_change"
+required-features = ["click-reaction", "bevy_easings"]
