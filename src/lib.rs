@@ -91,7 +91,7 @@
 //!
 //! This feature is optional; you will need to include `click-reaction`.
 //!
-//! See `examples/clickable_gizmo.rs`.
+//! See `examples/clickable_gizmo.rs` and `examples/clickable_gizmo_with_projection_change.rs`.
 
 #[cfg(feature = "click-reaction")]
 pub use click_reaction::*;
