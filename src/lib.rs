@@ -82,7 +82,7 @@
 //!
 //! ## Custom gizmos
 //!
-//! This crate supports customized gizmos through the use of the [gizmo] macro and setting the
+//! This crate supports customized gizmos through the use of the [gizmo!] macro and setting the
 //! [PluginOptions::gizmo] option.
 //! See `examples/custom_gizmo.rs` and `examples/flashing_gizmo.rs`.
 //!

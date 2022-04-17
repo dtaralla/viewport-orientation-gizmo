@@ -57,4 +57,5 @@ gizmo![the_gizmo(meshes, materials):
     } ; RaycastableGizmo::default() ; GizmoClickableAxis::Z
 ];
 
+/// Default clickable gizmo
 pub static GIZMO: crate::plugin::Gizmo = the_gizmo;

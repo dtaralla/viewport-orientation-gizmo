@@ -1,7 +1,7 @@
 /// Allows for customizing the object rendered as a gizmo.
 ///
 /// Usage:
-/// ```rust
+/// ```rust,ignore
 /// gizmo![some_gizmo_name:
 ///     SomeBundle(...),
 ///     (SomeComponentA, SomeComponentB { ... }),

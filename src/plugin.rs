@@ -30,11 +30,12 @@ pub enum CanvasLocation {
     Custom(Rect<Val>),
 }
 
-pub(crate) type Gizmo =
+/// A gizmo, as created with the `gizmo!` macro.
+pub type Gizmo =
     fn(RenderLayers, &mut Commands, ResMut<Assets<Mesh>>, ResMut<Assets<StandardMaterial>>);
 
 /// Options that enable plugin behavior customization.
-/// Defaults to 64x64, [BottomLeft].
+/// Defaults to 64x64, [CanvasLocation::BottomLeft].
 #[derive(Clone)]
 pub struct PluginOptions {
     pub size: u32,

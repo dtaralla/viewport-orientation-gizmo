@@ -25,8 +25,10 @@ impl Plugin for ClickReactionPlugin {
     }
 }
 
+/// Internal tag for raycasting; do not use directly
 pub struct GizmoRaycastSet;
 
+/// Use this to add clickable parts to your gizmo
 pub type RaycastableGizmo = RayCastMesh<GizmoRaycastSet>;
 
 fn setup(mut commands: Commands, query: Query<&Children, With<FirstPassCameraRoot>>) {
