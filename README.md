@@ -18,10 +18,8 @@ Bevy version/Bevy main commit.
 
 | x         | Supported features | Bevy min. version | Bevy main                                                                                     |
 |-----------|--------------------|-------------------|-----------------------------------------------------------------------------------------------|
-| **0.3.0** | all                | N/A[^1]           | [bf6de89](https://github.com/bevyengine/bevy/commit/bf6de8962287050369cd98605490bdd7770c87b4) |
-| **0.2.0** | all                | N/A[^1]           | [81d57e1](https://github.com/bevyengine/bevy/commit/81d57e129b507047ab165b1cee1975cd54ba100f) |
-
-[^1]: There is currently no official release of Bevy including the required commit.
+| **0.3.0** | all                | 0.7               | [bf6de89](https://github.com/bevyengine/bevy/commit/bf6de8962287050369cd98605490bdd7770c87b4) |
+| **0.2.0** | all                | 0.7               | [81d57e1](https://github.com/bevyengine/bevy/commit/81d57e129b507047ab165b1cee1975cd54ba100f) |
 
 # Usage
 

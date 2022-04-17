@@ -15,41 +15,51 @@ click-reaction = ["bevy_mod_raycast"]
 [dependencies]
 
 [dependencies.bevy]
-git = "https://github.com/bevyengine/bevy"
-branch = "main"
+version = "0.7"
 features = ["render"]
 default-features = false
 
 [dependencies.bevy_mod_raycast]
 git = "https://github.com/dtaralla/bevy_mod_raycast"
-branch = "support_all_render_targets"
+branch = "bevy0_7"
 optional = true
 
 [dependencies.bevy_easings]
-git = "https://github.com/dtaralla/bevy_easings"
-branch = "bevy_main"
+git = "https://github.com/vleue/bevy_easings"
+branch = "dependabot/cargo/bevy-0.7"
 optional = true
 
 [dev-dependencies.bevy]
-git = "https://github.com/bevyengine/bevy"
-branch = "main"
+version = "0.7"
 features = ["bevy_winit", "bevy_gltf"]
 default-features = false
 
 [target.'cfg(target_os = "linux")'.dev-dependencies.bevy]
-git = "https://github.com/bevyengine/bevy"
-branch = "main"
+version = "0.7"
 features = ["x11", "wayland"]
 default-features = false
 
-[dev-dependencies.smooth-bevy-cameras]
+[dependencies.smooth-bevy-cameras]
 git = "https://github.com/dtaralla/smooth-bevy-cameras"
-branch = "track_main"
+branch = "allow_pausing_interpolation"
+optional = true
 
 [[example]]
 name = "clickable_gizmo"
-required-features = ["click-reaction", "bevy_easings"]
+required-features = ["click-reaction", "bevy_easings", "smooth-bevy-cameras"]
 
 [[example]]
 name = "clickable_gizmo_with_projection_change"
-required-features = ["click-reaction", "bevy_easings"]
+required-features = ["click-reaction", "bevy_easings", "smooth-bevy-cameras"]
+
+[[example]]
+name = "custom_gizmo"
+required-features = ["smooth-bevy-cameras"]
+
+[[example]]
+name = "flashing_gizmo"
+required-features = ["smooth-bevy-cameras"]
+
+[[example]]
+name = "flying_camera"
+required-features = ["smooth-bevy-cameras"]
