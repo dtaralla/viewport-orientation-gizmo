@@ -7,10 +7,13 @@ also be used to display the orientation of any other entity featuring a `Transfo
 
 **PRs welcomed!**
 
+<p align="center">
+    <img src="/images/viewport-orientation-gizmo.gif" />
+</p>
+
 # Prerequisites
 
-This uses the
-experimental *[Render to texture](https://github.com/bevyengine/bevy/blob/main/examples/3d/render_to_texture.rs)*
+This uses the *[Render to texture](https://github.com/bevyengine/bevy/blob/main/examples/3d/render_to_texture.rs)*
 feature of Bevy.
 
 I'm trying to follow Bevy main whenever there are breaking changes. See table below for which version needs what minimum
@@ -99,5 +102,9 @@ See `examples/custom_gizmo.rs` and `examples/flashing_gizmo.rs`.
 This plugin can emit click events when the meshes constituting your gizmo are clicked.
 
 This feature is optional; you will need to include `click-reaction`.
+
+<p align="center">
+    <img src="/images/clickable-custom-gizmo.gif" />
+</p>
 
 See `examples/clickable_gizmo.rs` and `examples/clickable_gizmo_with_projection_change.rs`.
